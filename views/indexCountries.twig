@@ -1,0 +1,17 @@
+{% extends "base.twig" %}
+{% block body %}
+      Please choose a region :<br/> 
+  <div class='row'>
+      {% for countryQ, countryLabel in countries %}
+        <a style='border:1px solid #CCC; margin:5px; padding:5px' href="{{ url('viewCountry', {Q: countryQ}) }}" class="one-third column">
+          <img src='{{ global.request.basepath }}/img/flags/{{countryQ}}.png' width='100px'/>
+          <span>{{ countryLabel }}</span>
+        </a>
+        {% if loop.index % 3 == 0 %}
+          </div>
+          <div class='row'>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

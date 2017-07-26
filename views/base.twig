@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Encyclopedia of names">
+    <title>DataName{% if titleComplement is defined %}{{titleComplement}}{% endif %}</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="{{ global.request.basepath }}/js/jquery.qlabel.js"></script> 
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+
+  <link rel="stylesheet" href="{{ global.request.basepath }}/css/custom.css">
+  <style type='text/css'>
+  * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/*
+ * -- BASE STYLES --
+ * Most of these are inherited from Base, but I want to change a few.
+ */
+body {
+    line-height: 1.7em;
+    color: #7f8c8d;
+    font-size:0.85em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label {
+    color: #aa3e50;
+}
+
+h1 {
+  font-size:4em;
+}
+
+.home-menu {
+    background: #aa3e50;
+    color:white;
+}
+
+.home-menu a {
+    color:white;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+    ul#langSwitch li { 
+      text-align:right;
+      display : inline;
+      padding : 0 0.5em; /* Pour espacer les boutons entre eux */
+    }
+    ul#langSwitch {
+      list-style-type : none; /* Car sinon les puces se placent n'importe où */
+      padding:.5em 1em;
+      margin:0;
+    }
+
+    footer .container {
+      border-top:1px solid #AAA;
+    }
+
+    footer {
+      text-align:center;
+    }
+
+    .pure-button {
+      /* margin:10px; */
+      width:100%;
+    }
+
+    .pure-button img {
+      height:1em;
+      margin-right:.5em;
+    }
+
+    .oneResult {
+      padding:0.2em;
+    }
+
+    .pure-button span.sub-text-button {
+    font-size:0.8em;
+    color:gray;
+  }
+    .dimmed {
+    position: relative;
+    background-position:center center;
+    background-repeat:no-repeat;
+    }
+
+    .dimmed:after {
+    content: " ";
+    z-index: 10;
+    display: block;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.1);
+    }
+
+    .pure-table {
+      width:100%;
+    }
+
+    .loader {
+      float:right;
+      width:16px;
+      height:16px;
+      background-repeat: no-repeat;
+
+      background-image:url("data:image/gif;base64,R0lGODlhEAAQAPUAAP///wAAAO7u7lRUVAAAALa2tvb29tbW1uLi4mZmZggICL6+vk5OTtzc3BwcHCgoKOjo6GxsbCIiIkZGRpiYmH5+fsrKyoyMjKqqqvz8/NDQ0IaGhmBgYBYWFnJycsTExFpaWpKSkqSkpEBAQC4uLjQ0NJ6ennh4eA4ODjo6OrCwsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAAGo0CA0IDJAAhIR0YgbDYmhAKggyQIDp/mwYGcADzIEGDT0QgRjyrgQHAYIMiRgAmhII0EDGBUFQ0SCAAGD0YNAiJIAwtHSBUQGQZNCEZNVQQSTZkWEQpIChEWQpQAApYEmRkLgQAZGRpQSAALA0kQTQlCBSQlBZahDEIECotvBgxIwL1ZVYBCBxIEGgadIAAcSB0NWhdjahoEI9qZttexABiRQkEAIfkEAAoAAQAsAAAAABAAEAAABmBAgBAgGhGEhJFoyGQQnsjniCk0PY+Aq4eZQACs2OfWcCI+vVbkWEEoXtHCtfR6ZhrYV6p+z9fTCVtDYFdGYgAGQmiEIoZ3SIptACNyUWgMdnhRBF5UJ3lZTwl7bkhKTEEAIfkEAAoAAgAsAAAAABAAEAAABp1AgBAAGRGOQoxhKNRoAI8jAaAhjA7DQwcEWBy5HOnSwDh+MuUPQEp4FqQowGFqOA6ez8XgeMogAAgoZwAbXEN+TA0GKg5SChEWTEMgbJUFkgAWCQpsHRhMAggZTEYboxdDBkYEAwsABU8QKQSjIwACbCIZGRVScgSoF0cjAgAZHUcTAB5HAgIOHU9CEBMEl8gECRkf0qkYo1IMEExBADsAAAAAAAAAAAA=");
+    }
+
+
+    footer {
+      clear:both;
+      margin-top:1em;
+      border-top:1px dotted gray;
+    }
+
+  {% block css %}{% endblock %}
+  </style>
+</head>
+<body>
+<!-- Header
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+<div class="header home-menu">
+    <div class="pure-g  container">
+        <div class='pure-u-1 pure-u-md-1-3'>
+            <a class="pure-menu-heading" href='{{ global.request.baseUrl }}/{{ global.request.locale }}'>DataName</a>
+        </div>
+        <div class="pure-u-1 pure-u-md-2-3" style="text-align:right">
+          <ul id='langSwitch'>
+          {% set source_string = "/" ~ global.request.locale ~ "/" %}
+          {% for language in ['en', 'fr'] %}
+            {% set target = "/" ~ language ~ "/" %}
+            {% if language == global.request.locale %}
+              <li>{{ language }}</li>
+            {% else %}
+              {% if global.request.attributes.get('_route') == "index" %}
+                <li><a href="{{ global.request.requestUri ~ language }}">{{ language }}</a></li>
+              {% else %}
+                <li><a href="{{ global.request.requestUri|replace({(source_string): target}) }}">{{ language }}</a></li>
+            {% endif %}
+            {% endif %}
+            
+          {% endfor %}
+          </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Body
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+    {% block body %}
+    {% endblock %}
+    </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <footer>
+      {% include '_stats.twig' %}
+  </footer>
+
+
+<script type='text/javascript'>
+    $( document ).ready(function() {
+
+      var result = $.qLabel.switchLanguage('{{ global.request.locale }}');
+      result.done(function() {
+        $(".dimmed").removeClass("dimmed");
+        $(".loader").hide();
+        // $( "h2" ).append( " Finished! " );
+        // We can do something when everything is loaded
+      });
+    });
+
+{% block js %}
+{% endblock %}
+</script>
+</body>
+</html>

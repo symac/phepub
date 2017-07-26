@@ -1,0 +1,16 @@
+<ul id='langSwitch'>
+{% set source_string = "/" ~ global.request.locale ~ "/" %}
+{% for language in ['en', 'fr'] %}
+  {% set target = "/" ~ language ~ "/" %}
+  {% if language == global.request.locale %}
+    <li>{{ language }}</li>
+  {% else %}
+  	{% if global.request.attributes.get('_route') == "index" %}
+	    <li><a href="{{ global.request.requestUri ~ language }}">{{ language }}</a></li>
+  	{% else %}
+	    <li><a href="{{ global.request.requestUri|replace({(source_string): target}) }}">{{ language }}</a></li>
+	{% endif %}
+  {% endif %}
+  
+{% endfor %}
+</ul>
