@@ -7,6 +7,7 @@
         "simplepie/simplepie": "^1.5",
         "michelf/php-markdown": "^1.7",
         "grandt/phpepub": "4.0.7.1",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "symfony/yaml": "^3.4"
     }
 }

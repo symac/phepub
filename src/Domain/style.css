@@ -1,0 +1,935 @@
+/* toc for docbook to epub3 styles last update Nov 1 2013.  Please note that docbook automatically
+generates a docbook-epub.css file, so a typical xhtml file will link to 2 separate css files. 
+
+docbook-epub.css contains lots of div classes specific to technical docs (figure-title, sidebar-
+title, table-title) and nav ol)
+
+This file contains 
+1.global styles/baseline styles    
+2. more generic styles (most of which will be
+overridden)   
+2a. titlepage-specific customizations
+3. styles (usually with classes) which will override the generic styles
+4. image and caption garbage (arrggh!)
+5. Custom db classes which the user has inserted 
+6. Hacks for Specific devices 
+
+
+*/ 
+
+/*
+begin 111111 GLOBAL STYLES *******************************************************
+*/
+
+
+
+
+
+@font-face {
+  font-family: HomemadeApple;
+     src: url('HomemadeApple.otf')
+}
+
+/* below here are test custom fonts; not in final draft
+@font-face {
+  font-family: Pacifico;
+     src: url('Pacifico.ttf')
+}
+
+@font-face {
+  font-family: Cedarville-Cursive;
+     src: url('Cedarville-Cursive.ttf')
+}
+
+@font-face {
+  font-family: BerkshireSwash-Regular;
+     src: url('BerkshireSwash-Regular.otf')
+}
+above here are test custom fonts; not in final version
+* */
+
+
+html, body, div, applet, object, iframe, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del,
+dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub,
+sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form,
+label, legend, table, caption, tbody, tfoot, thead, tr, th, td { 
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+
+/*BEGIN this TOC stuff is taken straight from Staynton's book*/
+
+/* ul.hanging-list does two things: 1)it overrides the docbook bug that hardcodes a disc bullet point for ul, 2)it sets up hanging list for the p inside every listitem  */
+
+ul.hanging-list {
+padding-left: 2em;     
+}
+
+ul.hanging-list li 
+{
+list-style-type: none !important;   
+}
+
+
+ul.hanging-list li p
+{text-indent: -1em;
+  padding-left: 1em;
+
+
+}
+
+
+div.titlepage {
+  page-break-after: avoid;
+}
+
+div.toc-title {
+  font-size: 1.4em;
+  font-weight: bold;
+  font-family: sans-serif; 
+  /* font-family: "Free Sans Bold", sans-serif; */
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+nav li.toc-preface a {
+  color: black;
+  font-family: sans-serif;
+  text-decoration: none;
+}
+ 
+nav li.toc-part li.toc-chapter a {
+  color: black;
+  font-family: sans-serif;
+  font-weight: normal;
+  text-decoration: none;
+}
+ 
+nav li.toc-bibliography a {
+  color: black;
+  font-family: sans-serif;
+  text-decoration: none;
+}
+ 
+nav li.toc-appendix a {
+  color: black;
+  font-family: sans-serif;
+  text-decoration: none;
+}
+ 
+nav li.toc-index a {
+  color: black;
+  font-family: sans-serif;
+  text-decoration: none;
+}
+ 
+nav li.toc-part a {
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+nav ol {
+  margin-bottom: 1em;
+  list-style-type: none;
+  padding: 0 0 0 0;
+}
+
+nav ol li {
+  margin-bottom: 1em;
+}
+
+nav ol ul {
+  margin-bottom: 0em;
+  margin-left: 1em;
+  list-style-type: none;
+}
+
+nav ol ol li {
+  margin-bottom: 0em;
+}
+
+
+
+
+/*END this TOC stuff is taken straight from Staynton's book*/
+
+
+/*START setting font defaults for everything; maybe unnecessary? */
+body {
+
+	font-size: 1em;  
+
+}
+
+
+p.pseudo-title {
+
+  	 -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+ }
+ 
+ p.preface-pseudo-title {
+
+  	 -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+     page-break-before: always !important;     
+         color:  #594630;
+margin: 0em 0em 1em 0em;
+  text-indent: 0em;
+font-size: 2.5em;
+text-align: center;
+
+
+ }
+ 
+
+ p.pseudo-subtitle{
+ 
+  	 -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+ }
+
+ div.toc-title {
+
+  	 -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+ }
+
+
+/* Appropriate heading hyphenation suppression for different ereaders */
+ h1, h2, h3, h4 { 
+  -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+  page-break-after: avoid;
+  
+
+}
+/*END this TOC stuff is taken straight from Staynton's book*/
+
+/* Removes hyphens for title-captions for each chapter. Appropriate heading hyphenation suppression for different ereaders. Note that this includes "div.title-caption p"  */
+div.title-caption { 
+ -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+  page-break-after: avoid;
+
+}
+/*END setting font defaults for everything; maybe unnecessary? */
+
+.italic {
+ font-style: italic;   }
+ 
+ .bold {
+     font-weight: bold;
+ }
+ 
+  /* BEGIN UNSPECIFIED DEFAULTS  
+  Below are defaults which are valid for unspecified screens. These will be changed later in the media queries afterwards. */
+ 
+ 
+   /* BEGIN UNSPECIFIED DEFAULTS  
+ Please note that this applies to the p.pseudo-title and p.pseudo-title. You will need to override these styles individually.  */
+ p {
+ margin: 0 0 0 0;
+ font-size: 1em;
+  line-height: 1.2em;
+  text-indent: 1.25em;
+  orphans: 2;
+widows: 2; 
+}
+
+
+/*
+p:first-of-type::first-line {
+    font-weight: normal;
+    font-variant: small-caps;
+
+ }*/
+ 
+/*
+code below looks like unnecessary stuff for testing
+div.title-caption p:first-of-type::first-line {
+    font-variant: normal;
+     color: #594630;
+ }*/
+ 
+ div.title-caption p{
+
+    font-variant: normal;
+text-indent: 0em;
+  color: #594630;
+font-size: 2em;
+text-align:center;
+ width:100%;
+ }
+ 
+ p.no-indent {
+text-indent: 0em;
+}
+ 
+ /* Because we are not grabbing the title from chapters but using graphics on top, we need a class for 
+when the chapter has no title graphic; Note that hyphenation is turned off and font-size here is 2.5 to match */
+ 
+p.pseudo-title{
+    color:  #594630;
+margin: 0em 0em 1em 0em;
+  text-indent: 0em;
+font-size: 2.5em;
+text-align: center;
+ -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+  page-break-after: avoid;
+}
+
+p.pseudo-subtitle{
+    color:  #594630;
+
+    font-style: italic; 
+margin: 0em 0em 3em 0em;
+  text-indent: 0em;
+font-size: 1.5em;
+text-align: center;
+ -webkit-hyphens: none;
+  hyphens: none;
+  -adobe-hyphenate: none;
+  -epub-hyphens: none; 
+  page-break-after: avoid;
+}
+
+
+
+  blockquote.letter {
+     margin: 1em 0em 1em 0em;    
+ }
+
+ /* CSS for LETTER: Font declarations are in device-specific file  */
+p.letter-date {
+  font-family:  sans-serif;
+
+    margin: 1em 4em 2em 0em;   
+    text-align: right;
+      font-size: 1.2em;
+      text-indent: 0em;
+    }
+    
+  /* CSS for LETTER: Font declarations are in device-specific file  */   
+    p.letter-signature {
+   font-family: HomemadeApple, sans-serif;
+    font-size: 1.4em;
+    margin: 1em 0em 2em 0em;
+    padding-left: 10%; 
+    text-indent: 0em;
+    }
+
+
+  blockquote {
+     margin: 1em 1em 1em 1em;  
+
+     
+ }
+
+  blockquote.stanza {
+     margin: 1em 0em 1em 0em;  
+     
+ }
+
+ /* for verse lines. */
+
+ p.line-verse {
+    text-indent: -2em; padding-left: 3em;
+    padding-right: 3em;
+    line-height: 80%;
+ 
+     
+ }
+ 
+ 
+ p.centeredbreak {
+     text-indent: 0px;
+     margin: 1.2em 0 1.2em 0;
+     text-align: center;
+     font-size: .9em;
+         color: #595959; 
+         
+      
+
+     }
+ 
+ 
+  p.centeredpagebreak {
+     text-indent: 0px;
+     margin: 1.2em 0 1.2em 0;
+     text-align: center;
+     font-size: 1.2em;
+     page-break-before: always;
+
+     }
+ 
+
+div.author-profile {
+width: 30%;
+max-width: 450px;
+  margin-left:  auto;
+   margin-right:  auto;
+   margin-bottom: 2em;
+}
+
+div.author-profile img{
+display: inline;
+width: 95%; 
+    
+}
+
+    
+
+
+
+
+/*naked h1 only applies to the TOC page. We will be overriding them for index.html and chapters. 
+ We will include some general characteristics here also.*/
+h1 {
+color: #848484;
+font-family:  Verdana, Lucida, Helvetica, sans-serif;
+margin: .5em 0em 1em 0em;
+text-align: center;
+font-size: 2em;
+color: #594630;
+}
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+text-align: center;
+width: 90%;   
+font-size: 1.5em;
+color: #594630;
+    
+}
+
+/* This refers to the book title  line on index.xhml     page-break-before: always;     
+We are forcing a page break before in order to accomodate the quote page prior to the title page 
+* */
+h1.titlepage {
+color: #594630;
+    font-size: 4em; 
+    font-family: sans-serif;
+   margin: 2em 0em 1em 0em;
+ 
+   
+}
+
+/* Author name is below book title on  index.xhml. Smaller font */
+   h3.author {
+color: #594630;
+text-align: center;
+font-size: 2em; 
+margin: 1em 0em 2em 0em;
+}
+
+div.legalnotice  {
+    margin: 3em 1em 1em 1em;
+}
+
+
+p.copyright {
+    margin: 0em 1em 0em 1em;
+    text-align: center;
+}
+
+p.viewing-tips {
+margin: 2em 2em 1em 2em;
+    font-size: .8em; 
+     line-height: 100%;
+}
+
+
+ /* generic dl styles for the bibliography. Default font size is slightly smaller and with margin-left; span.term will be bold  */
+dl.variablelist {
+margin: .8em .8em .8em 2em ;
+    font-size: .8em;
+    
+}
+
+ /* bibliography. book title  */
+span.term{
+ font-weight: bold;
+
+}
+
+ /* bibliography. short note about book title   */
+dl.variablelist dd p {
+/*    font-style: italic; oops, I think we will leave this as regular text*/
+    margin-left: 2em; 
+    text-indent: 0em; 
+}
+
+
+
+
+
+
+p.version-notes {
+margin: 2em 2em 1em 2em;
+    font-size: .8em; 
+   line-height: 100%;
+}
+
+
+
+p.highlight-titlepage {
+    margin: 1em 1em 1em 1em; 
+    font-size: 1.3 em;
+    text-align: center; 
+
+}
+
+/*This goes in the pre-title page quotes about the author */
+p.title-blurb {
+    
+    text-align: center;
+}
+
+/*This goes in the pre-title page quotes about the author */
+p.title-blurb-author {
+text-align: center;
+        
+        margin: 1em 1em 3em 3em;
+
+}
+
+
+
+  /* END  UNSPECIFIED DEFAULTS  
+  Below are defaults which are valid for unspecified screens. These will be changed later in the media queries afterwards. */
+
+
+ /* BEGIN PHONE MEDIA QUERY -- valid for both portrait and landscape
+*/
+
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and  (max-device-width: 767px)
+/*  valid for both portrait and landscape*/
+  {
+ 
+ 
+div.image-replace-title  {
+/*  text-align:center;*/
+width: 95%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.image-replace-title img {
+/*
+border-style: dotted;
+border-color:  #594630;
+    border-width: 1px;
+    */
+width: 100%;
+display: inline;
+    }
+
+div.title-caption {
+margin: .5em 0em 2.5em 0em;
+width: 90%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.title-caption  p{
+    color: #594630;
+font-size: 2em;
+text-align:center;
+ width:100%;
+}
+
+
+
+
+/* These are the media queries for the other headlines, which should mirror div.title-caption p. (indeed, p.pseudo-title and h1 should have identical values to div.title-caption p). Note that pseudo-subtitle should be incrementally smaller than pseudo-title; also, div.toc-title should be incrementally smaller than h1*/
+p.pseudo-title{
+margin: 0em 0em 1em 0em;
+font-size: 2em;
+}
+
+p.pseudo-subtitle{
+margin: 0em 0em 2em 0em;
+font-size: 1.2em;
+}
+
+h1 {
+margin: .5em 0em 1em 0em;
+font-size: 2em;
+}
+
+/* Smaller fonts and spacing for phones! This refers to the book title  line on index.xhml */
+ h1.titlepage {
+color: #594630;
+    font-size: 2em; 
+    font-family: sans-serif;
+   margin: 1em 0em 1em 0em;
+}
+
+/* Smaller fonts and spacing for phones! Author name is below book title on  index.xhml. Smaller font */
+   h3.author {
+color: #594630;
+text-align: center;
+font-size: 1.5em; 
+margin: 1em 0em 1em 0em;
+}
+
+/* Smaller fonts and spacing for phones! margin needs to be smaller between legalnotice and copyright stuff  index.xhml Smaller font */
+div.legalnotice  {
+    margin: 1.5em 1em 1em 1em;
+}
+
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+font-size: 1.2em;   
+}
+/* END SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query. */
+
+
+
+
+ 
+ }
+ 
+/* ................................................END Above is for minimum width 320px -- iphones, 
+ /* BEGIN PHONE MEDIA QUERY -- Landscape 768 to 1500.
+ Because we assume 2 columns, This is basically the same as Phone Portait 
+*/
+
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and  (max-device-width: 1500px) 
+  and (orientation: landscape) 
+                                   {
+ 
+ 
+div.image-replace-title  {
+/*  text-align:center;*/
+width: 95%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.image-replace-title img {
+/*
+border-style: dotted;
+border-color:  #594630;
+    border-width: 1px;*/
+    
+width: 100%;
+display: inline;
+    }
+
+div.title-caption {
+margin: .5em 0em 2.5em 0em;
+width: 90%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.title-caption  p{
+    color: #594630;
+font-size: 2em;
+text-align:center;
+ width:100%;
+}
+
+/* These are the media queries for the other headlines, which should mirror div.title-caption p. (indeed, p.pseudo-title and h1 should have identical values to div.title-caption p). Note that pseudo-subtitle should be incrementally smaller than pseudo-title; also, div.toc-title should be incrementally smaller than h1*/
+p.pseudo-title{
+margin: 0em 0em 1em 0em;
+font-size: 2em;
+}
+
+p.pseudo-subtitle{
+margin: 0em 0em 2em 0em;
+font-size: 1.2em;
+}
+
+h1 {
+margin: .5em 0em 1em 0em;
+font-size: 2em;
+}
+
+
+/* Smaller fonts and spacing for phones! This refers to the book title  line on index.xhml */
+ h1.titlepage {
+color: #594630;
+    font-size: 2em; 
+    font-family: sans-serif;
+   margin: 1em 0em 1em 0em;
+}
+
+/* Smaller fonts and spacing for phones! Author name is below book title on  index.xhml. Smaller font */
+   h3.author {
+color: #594630;
+text-align: center;
+font-size: 1.5em; 
+margin: 1em 0em 1em 0em;
+}
+
+/* Smaller fonts and spacing for phones! margin needs to be smaller between legalnotice and copyright stuff  index.xhml Smaller font */
+div.legalnotice  {
+    margin: 1.5em 1em 1em 1em;
+}
+
+
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+font-size: 1.2em;   
+}
+/* END SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query. */
+ 
+                                   }
+
+
+ 
+ /* ................................................END Above  
+ /*                           BEGIN HUMUNGOUS LANDSCAPE WITH 2 COLUMNS  -- Landscape 1500 up.
+ This is when landscape for 2 columns is so huge it looks like a typical portait tablet. 
+ Therefore it looks pretty much the same as PORTRAIT 768-1024
+ */
+ 
+ 
+@media only screen 
+  and (min-device-width: 1500px) 
+  and (orientation: landscape) 
+                                   {
+                                   
+ 
+div.image-replace-title  {
+/*  text-align:center;*/
+width: 85%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.image-replace-title img {
+
+/*border-style: dotted;
+border-color:  #594630;
+    border-width: 1px;*/
+    
+width: 100%;
+display: inline;
+    }
+
+div.title-caption {
+margin: .5em 0em 3em 0em;
+width: 80%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.title-caption  p{
+    color: #594630;
+font-size: 3em;
+text-align:center;
+ width:100%;
+}       
+
+/* These are the media queries for the other headlines, which should mirror div.title-caption p. (indeed, p.pseudo-title and h1 should have identical values to div.title-caption p). Note that pseudo-subtitle should be incrementally smaller than pseudo-title; also, div.toc-title should be incrementally smaller than h1*/
+p.pseudo-title{
+margin: 0em 0em 1em 0em;
+font-size: 3em;
+}
+
+p.pseudo-subtitle{
+margin: 0em 0em 2em 0em;
+font-size: 2em;
+}
+
+h1 {
+margin: .5em 0em 1em 0em;
+font-size: 3em;
+}
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+font-size: 2em;   
+}
+/* END SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query. */
+
+                                   
+                                   
+                                   }
+  
+ 
+ /* ................................................END HUMONGOUS 2 COLUMN LANDSCAPE 
+ /*                                      BEGIN PORTRAIT FOR TYPICAL TABLETS 768-1024
+ THIS PROBABLY COMPRISES ABOUT 60-70% OF CASES
+*/
+
+
+@media only screen 
+  and (min-device-width: 768px)
+    and (max-device-width: 1024px)
+  and (orientation: portrait)
+                                        {
+                                        
+
+div.image-replace-title  {
+width: 90%;
+max-width: 684px;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.image-replace-title img {
+/*
+border-style: dotted;
+border-color:  #594630;
+    border-width: 1px;*/
+    
+width: 100%;
+display: inline;
+    }
+
+div.title-caption {
+margin: .5em 0em 4em 0em;
+}
+
+div.title-caption  p{
+    color: #594630;
+font-size:  3em;
+text-align:center;
+width: 85%;
+  margin-left:  auto;
+   margin-right:  auto;
+
+}
+
+/* BEGIN SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query.  These are the media queries for the other headlines, which should mirror div.title-caption p. (indeed, p.pseudo-title and h1 should have identical values to div.title-caption p). Note that pseudo-subtitle should be incrementally smaller than pseudo-title; also, div.toc-title should be incrementally smaller than h1*/
+p.pseudo-title{
+margin: 0em 0em 1em 0em;
+font-size: 3em;
+}
+
+p.pseudo-subtitle{
+margin: 0em 0em 2em 0em;
+font-size: 1.5em;
+}
+
+h1 {
+margin: .5em 0em 1em 0em;
+font-size: 3em;
+}
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+font-size: 1.5em;   
+}
+
+/* END SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query. */
+ 
+                                      }
+
+
+
+
+
+ /* ................................................END PORTRAIT FOR TYPICAL TABLETS 
+ /*                                    BEGIN PORTRAIT FOR HUMUNGOUS  TABLETS 1025 UP
+ I'M JUST FUTURE PROOFING HERE 
+*/
+
+ 
+@media only screen 
+  and (min-device-width: 1025px)
+  and (orientation: portrait)
+                {
+ 
+ 
+div.image-replace-title  {
+width: 75%;
+max-width: 800px;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.image-replace-title img {
+
+/*border-style: dotted;
+border-color:  #594630;
+    border-width: 1px;*/
+    
+width: 100%;
+
+}
+
+
+div.title-caption {
+    
+margin: 1em 0em 5em 0em;
+width: 70%;
+  margin-left:  auto;
+   margin-right:  auto;
+}
+
+div.title-caption  p{
+    color: #594630;
+font-size:  3em;
+text-align:center;
+width: 100%;
+  margin-left:  auto;
+   margin-right:  auto;
+
+}
+
+/* BEGIN SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query.  These are the media queries for the other headlines, which should mirror div.title-caption p. (indeed, p.pseudo-title and h1 should have identical values to div.title-caption p). Note that pseudo-subtitle should be incrementally smaller than pseudo-title; also, div.toc-title should be incrementally smaller than h1*/
+p.pseudo-title{
+margin: 0em 0em 1em 0em;
+font-size: 3em;
+}
+
+p.pseudo-subtitle{
+margin: 0em 0em 2em 0em;
+font-size: 1.5em;
+}
+
+h1 {
+margin: .5em 0em 1em 0em;
+font-size: 3em;
+}
+
+div.toc-title {
+ margin: .5em 0em 2em 0em;
+font-size: 1.5em;   
+}
+/* END SYNCHRONIZED STYLES TO DIV.TITLE CAPTION. P which is necessary for each media query. */
+
+
+                }
+ 
+ 
+ 
+/*................................................END PORTRAIT FOR HUMUNGOUS  TABLETS 1025 UP*/
+

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Phepub\Domain\Lesson;
+use Phepub\Domain\Image;
 
 use SimplePie;
 
@@ -68,16 +69,20 @@ class UpdateController {
 				$filename = $href->nodeValue;
 				$lesson = new Lesson($app);
 				if (preg_match("#^lessons/#", $filename)) {
-					$lesson_exist = $lesson->loadByFileName($filename);
-					if ($lesson_exist) {
-						// On la passe à null pour qu'elle soit de nouveau téléchargée
-						$app["db"]->update("phepub_lessons", array("last_checked" => null), array("id" => $lesson->getId()));
+					# On regarde le cas où la leçon est renommée
+					if (preg_match("# → #", $filename)) {
+						print "Leçon renommée, à traiter a posteriori";
 					} else {
-						print "SAVE";
-						$lesson->setFilename($filename);
-						$lesson->save();
+						$lesson_exist = $lesson->loadByFileName($filename);
+						if ($lesson_exist) {
+							// On la passe à null pour qu'elle soit de nouveau téléchargée
+							$app["db"]->update("phepub_lessons", array("last_checked" => null), array("id" => $lesson->getId()));
+						} else {
+							print "SAVE";
+							$lesson->setFilename($filename);
+							$lesson->save();
+						}						
 					}
-
 				}
 
 			    echo "&nbsp;&nbsp;&nbsp;&nbsp;".$href->nodeValue."<br/>";                       // echo current attribute value
@@ -90,10 +95,15 @@ class UpdateController {
 		}
 
 		print "<h1>Analyse des leçons</h1>";
-		$lessons = $app["db"]->fetchAll("select * from phepub_lessons where last_checked is null");
+		$lessons = $app["db"]->fetchAll("select * from phepub_lessons"); # where last_checked is null");
 
-		foreach ($lessons as $lesson) {
-			print $lesson["filename"]."<br/>";
+		foreach ($lessons as $row) {
+			// On va télécharger le MD
+			print $row["filename"]."<br/>";
+			$lesson = new Lesson($app);
+			$lesson->buildFromDomain($row);
+			$lesson->downloadAttachments();
+			$lesson->save();
 		}
 		return "";
 	}
