@@ -23,3 +23,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'cache' => __DIR__ . '/../cache/twig',
     ),
 ));
+
+
+$app['dao.book'] = function ($app) { return new Phepub\DAO\BookDAO($app['db']); };
+$app['dao.lesson'] = function ($app) { return new Phepub\DAO\LessonDAO($app['db']); };

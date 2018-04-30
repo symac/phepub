@@ -1,6 +1,6 @@
 <?php
 
-namespace Bibdix\DAO;
+namespace Phepub\DAO;
 
 use Doctrine\DBAL\Connection;
 
@@ -35,5 +35,5 @@ abstract class DAO
      * Builds a domain object from a DB row.
      * Must be overridden by child classes.
      */
-    protected abstract function buildDomainObject(array $row);
+    protected abstract function buildFromDomain(array $row);
 }

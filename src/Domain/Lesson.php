@@ -6,34 +6,12 @@ use Phepub\Domain\Image;
 use Symfony\Component\Yaml\Yaml;
 
 class Lesson {
-	protected $app;
-
 	protected $id = null;
 	protected $filename = null;
 	protected $last_checked = null;
 	protected $metadata = null;
 
-	public function __construct($app) {
-		$this->app = $app;
-	}
-
-	public function loadByFileName(String $filename) {
-		$stmt = $this->app["db"]->prepare("select * from phepub_lessons where filename like ?");
-		$stmt->bindValue(1, $filename, "string");
-		$stmt->execute();
-
-		$row = $stmt->fetch();
-		if ($row) {
-			$this->buildFromDomain($row);
-			return true;
-		}
-		return false;
-	}
-
-	public function buildFromDomain($row) {
-		$this->setId($row["id"]);
-		$this->setFilename($row["filename"]);
-		$this->setLastChecked($row["last_checked"]);
+	public function __construct() {
 	}
 
 	public function setFilename(String $filename) {
@@ -161,18 +139,6 @@ class Lesson {
 				$image = new Image($this, $figureFile);
 				$image->download();
 			}
-		}
-	}
-
-	public function save() {
-		$lessonData = [
-			"filename" => $this->getFilename(),
-			"last_checked" => $this->getLastChecked()
-		];
-		if (!$this->getId()) {
-			$this->app["db"]->insert("phepub_lessons", $lessonData);
-		} else {
-			$this->app["db"]->update("phepub_lessons", $lessonData, array("id" => $this->getId()));			
 		}
 	}
 }

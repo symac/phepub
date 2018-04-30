@@ -14,16 +14,25 @@ use Phepub\Domain\Lesson;
 class Book {
 	protected $title = "Programming historian - ePub edition";
 	protected $lessons = array();
+	protected $filename;
 
 	public function setTitle($title) {
 		$this->title = $title;
+	}
+
+	public function getFilename() {
+		return $this->filename;
+	}
+	
+	public function setFilename($filename) {
+		$this->filename = $filename;
 	}
 
 	public function addLesson(Lesson $lesson) {
 		array_push($this->lessons, $lesson);
 	}
 
-	public function generateAsEpub() {
+	public function generateAsEpub($filename) {
 		$epub = new EPub(); // Default is EPub::BOOK_VERSION_EPUB2
 		$fileDir = './PHPePub';
 		$content_start =
@@ -42,6 +51,20 @@ class Book {
 
 		$epub->setTitle($this->title);
 		$epub->setIdentifier("981447ba-200d-40ff-825c-1a7a7520b7d6", EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferred for published books, or a UUID.
+
+		$chapterCount = 1;
+
+		foreach ($this->lessons as $lesson) {
+			$chapterContent = $content_start.$lesson->getHtml().$book_end;
+			$chapterFilename = "chapter".sprintf("%03d", $chapterCount).".html";
+			$epub->addChapter($lesson->getTitle(), $chapterFilename, $chapterContent, true, EPub::EXTERNAL_REF_ADD);
+			$chapterCount++;
+		}
+		$epub->buildTOC();
+
+		date_default_timezone_set('Europe/Paris');
+		$epub->finalize(); // Finalize the book, and build the archive.
+		return $epub
 
 		########################################################
 		## Details génération epub en PHP ##
@@ -77,27 +100,14 @@ class Book {
 
 		// $log->logLine("Set up parameters");
 
-		$cssData = file_get_contents(dirname(__FILE__)."/style.css");
-		$epub->addCSSFile("styles.css", "css1", $cssData);
+		// $cssData = file_get_contents(dirname(__FILE__)."/style.css");
+		// $epub->addCSSFile("styles.css", "css1", $cssData);
 
 
 		// $cover = $content_start . "<h1>Test Book</h1>\n<h2>By: John Doe Johnson</h2>\n" . $bookEnd;
 		// $book->addChapter("Notices", "Cover.html", $cover);
 
-		// $book->buildTOC();
 
-		$chapterCount = 1;
-
-		foreach ($this->lessons as $lesson) {
-			$chapterContent = $content_start.$lesson->getHtml().$book_end;
-			$chapterFilename = "chapter".sprintf("%03d", $chapterCount).".html";
-			$epub->addChapter($lesson->getTitle(), $chapterFilename, $chapterContent, true, EPub::EXTERNAL_REF_ADD);
-			$chapterCount++;
-		}
-
-		date_default_timezone_set('Europe/Paris');
-		$epub->finalize(); // Finalize the book, and build the archive.
-		$zipData = $epub->sendBook("ExampleBook2");
 	}
 
 }

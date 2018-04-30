@@ -16,14 +16,26 @@ use Phepub\Domain\Lesson;
 class HomeController {
 	// Displaying homepage
 	public function indexAction( Request $request, Application $app ) {
+        $lessons = $app["dao.lesson"]->findAll();
+        $lastBook = $app["dao.book"]->findRecent();
+
+        return $app['twig']->render('index.html.twig', array(
+            'lessons' => $lessons,
+            'lastBook' => $lastBook
+        ));
+    }
+
+    public function buildEpubAction( Request $request, Application $app ) {
         error_reporting(E_ALL | E_STRICT);
         ini_set('error_reporting', E_ALL | E_STRICT);
         ini_set('display_errors', 1);
 
-		$lessons = $app["db"]->fetchAll("select * from phepub_lessons limit 0,1"); # where last_checked is null");
+		$lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
 
+        print date("Ymd");
+        exit;
         $book = new Book();
-        $book->setTitle("My PH");
+        $book->setTitle();
 		foreach ($lessons as $row) {
 			// On va télécharger le MD
 			$lesson = new Lesson($app);
@@ -33,8 +45,6 @@ class HomeController {
         $book->generateAsEpub();
 
         return "";
-
-
 
 // This is not really a part of the EPub class, but IF you have errors and want to know about them,
 //  they would have been written to the output buffer, preventing the book from being sent.
