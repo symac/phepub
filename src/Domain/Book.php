@@ -32,7 +32,7 @@ class Book {
 		array_push($this->lessons, $lesson);
 	}
 
-	public function generateAsEpub($filename) {
+	public function generateAsEpub() {
 		$epub = new EPub(); // Default is EPub::BOOK_VERSION_EPUB2
 		$fileDir = './PHPePub';
 		$content_start =
@@ -42,7 +42,7 @@ class Book {
 		. "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 		. "<head>"
 		. "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n"
+		. "<link rel=\"stylesheet\" type=\"text/css\" href=\"blitz.css\" />\n"
 		. "<title>Test Book</title>\n"
 		. "</head>\n"
 		. "<body>\n";
@@ -64,7 +64,7 @@ class Book {
 
 		date_default_timezone_set('Europe/Paris');
 		$epub->finalize(); // Finalize the book, and build the archive.
-		return $epub
+		return $epub;
 
 		########################################################
 		## Details génération epub en PHP ##

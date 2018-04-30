@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+  "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en" dir="ltr">
+	<head>
+		<meta name="dtb:uid" content="981447ba-200d-40ff-825c-1a7a7520b7d6" />
+		<meta name="dtb:depth" content="3" />
+		<meta name="dtb:totalPageCount" content="0" />
+		<meta name="dtb:maxPageNumber" content="0" />
+	</head>
+
+	<docTitle>
+		<text>Programming Historian</text>
+	</docTitle>
+
+	<docAuthor>
+		<text></text>
+	</docAuthor>
+
+	<navMap>
+		<navPoint id="chapter1" playOrder="1">
+			<navLabel>
+				<text>Getting Started with Topic Modeling and MALLET</text>
+			</navLabel>
+			<content src="chapter001.html" />
+		</navPoint>
+		<navPoint id="chapter2" playOrder="2">
+			<navLabel>
+				<text>Applied Archival Downloading with Wget</text>
+			</navLabel>
+			<content src="chapter002.html" />
+		</navPoint>
+				<navPoint id="ref-1" playOrder="3">
+					<navLabel>
+						<text>Table of Contents</text>
+					</navLabel>
+					<content src="TOC.xhtml" />
+				</navPoint>
+	</navMap>
+</ncx>

@@ -5,11 +5,11 @@
     "require": {
         "silex/silex": "^2.2",
         "simplepie/simplepie": "^1.5",
-        "michelf/php-markdown": "^1.7",
         "grandt/phpepub": "4.0.7.1",
         "doctrine/dbal": "^2.5",
         "symfony/yaml": "^3.4",
         "twig/twig": "^2.4",
-        "symfony/twig-bridge": "^3.4"
+        "symfony/twig-bridge": "^3.4",
+        "erusev/parsedown": "^1.7"
     }
 }

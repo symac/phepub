@@ -32,25 +32,21 @@ class HomeController {
 
 		$lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
 
-        print date("Ymd");
-        exit;
         $book = new Book();
-        $book->setTitle();
-		foreach ($lessons as $row) {
-			// On va télécharger le MD
-			$lesson = new Lesson($app);
-			$lesson->buildFromDomain($row);
+        $book->setTitle("Programming Historian");
+		foreach ($lessons as $lesson) {
             $book->addLesson($lesson);
 		}
         $epub = $book->generateAsEpub();
 
         // To finish ...
-        $this->app["dao.book"]->save()
+        // $this->app["dao.book"]->save($book);
+        $filename_full = "epub/programminghistorian_".date("Ymd").".epub";
+        print "Save as <a href='".$filename_full."'>$filename_full</a>\n";
+        $epub->saveBook($filename_full);
 
-        $zipData = $epub->sendBook("ExampleBook2");
-
-
-        return "";
+//        $zipData = $epub->sendBook("ExampleBook2");
+        return "Generation ok";
 
 // This is not really a part of the EPub class, but IF you have errors and want to know about them,
 //  they would have been written to the output buffer, preventing the book from being sent.

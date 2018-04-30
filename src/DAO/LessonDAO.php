@@ -7,7 +7,7 @@ use Phepub\Domain\Lesson;
 class LessonDAO extends DAO
 {
     public function findAll() {
-        $sql = "select * from ".T_LESSON." where filename not like 'lessons/retired%'";
+        $sql = "select * from ".T_LESSON." where filename not like 'lessons/retired%' limit 1,2";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

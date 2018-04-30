@@ -1,9 +1,9 @@
 <?php
 namespace Phepub\Domain;
 
-use Michelf\Markdown;
 use Phepub\Domain\Image;
 use Symfony\Component\Yaml\Yaml;
+use Parsedown;
 
 class Lesson {
 	protected $id = null;
@@ -111,12 +111,13 @@ class Lesson {
 				$figureFile = preg_replace('#^.*filename="([^"]*)".*$#', "$1", $include);
 				$image = new Image($this, $figureFile);
 				$markDown = str_replace($include, "<img src='".$image->getLocalPath()."'/>", $markDown);
-				# $markDown = str_replace($include, "FIGURRRRRRRRRRR", $markDown);				
 			}
 		}
 
 		// Managing top metadata
-		$mon_html = Markdown::defaultTransform($markDown);
+		// $mon_html = Markdown::defaultTransform($markDown);
+		$parser = new ParseDown;
+		$mon_html = $parser->text($markDown);
 		return $mon_html;
 	}
 
