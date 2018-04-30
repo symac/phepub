@@ -42,12 +42,16 @@ class Book {
 		. "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 		. "<head>"
 		. "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" href=\"blitz.css\" />\n"
+		. "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/styles.css\" />\n"
 		. "<title>Test Book</title>\n"
 		. "</head>\n"
 		. "<body>\n";
 
 		$book_end = "</body>\n</html>\n";
+
+
+		$cssData = file_get_contents(ROOT."web/assets/blitz.css");
+		$epub->addCSSFile("styles/styles.css", "css1", $cssData);
 
 		$epub->setTitle($this->title);
 		$epub->setIdentifier("981447ba-200d-40ff-825c-1a7a7520b7d6", EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferred for published books, or a UUID.

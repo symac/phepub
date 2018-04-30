@@ -20,13 +20,13 @@
 	<navMap>
 		<navPoint id="chapter1" playOrder="1">
 			<navLabel>
-				<text>Getting Started with Topic Modeling and MALLET</text>
+				<text>Applied Archival Downloading with Wget</text>
 			</navLabel>
 			<content src="chapter001.html" />
 		</navPoint>
 		<navPoint id="chapter2" playOrder="2">
 			<navLabel>
-				<text>Applied Archival Downloading with Wget</text>
+				<text>Automated Downloading with Wget</text>
 			</navLabel>
 			<content src="chapter002.html" />
 		</navPoint>

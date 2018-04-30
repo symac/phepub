@@ -8,26 +8,16 @@
 		<dc:title>Programming Historian</dc:title>
 		<dc:language>en</dc:language>
 		<dc:identifier id="BookId" opf:scheme="URI">981447ba-200d-40ff-825c-1a7a7520b7d6</dc:identifier>
-		<dc:date opf:event="publication">2018-04-30T20:51:46.000000+00:00</dc:date>
+		<dc:date opf:event="publication">2018-04-30T21:29:37.000000+00:00</dc:date>
 		<dc:source>http://127.0.0.1/</dc:source>
 		<meta name="generator" content="EPub (Version 4.0.6) by A. Grandt, http://www.phpclasses.org/package/6115 or https://github.com/Grandt/PHPePub/" />
 	</metadata>
 
 	<manifest>
 		<item id="ncx" href="book.ncx" media-type="application/x-dtbncx+xml" />
-		<item id="i_windows-150x150.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/windows-150x150.png" media-type="image/png" />
-		<item id="i_fig1-advanced-system-settings.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig1-advanced-system-settings.png" media-type="image/png" />
-		<item id="i_fig2-environment-variables-location.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig2-environment-variables-location.png" media-type="image/png" />
-		<item id="i_fig3-environment-variable.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig3-environment-variable.png" media-type="image/png" />
-		<item id="i_fig-4-command-prompt-window.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-4-command-prompt-window.png" media-type="image/png" />
-		<item id="i_fig-5-command-prompt-window-getting-to-c.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-5-command-prompt-window-getting-to-c.png" media-type="image/png" />
-		<item id="i_fig-6command-prompt-mallet-installed.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-6command-prompt-mallet-installed.png" media-type="image/png" />
-		<item id="i_apple-150x150.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/apple-150x150.png" media-type="image/png" />
-		<item id="i_fig-7-command-prompt-typing-help.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-7-command-prompt-typing-help.png" media-type="image/png" />
-		<item id="i_fig-8-basic-topic-model-output.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-8-basic-topic-model-output.png" media-type="image/png" />
-		<item id="i_fig-9-tutorial-key-words-in-Word.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-9-tutorial-key-words-in-Word.png" media-type="image/png" />
-		<item id="i_fig-10-topic-composition.png" href="images/var/www/phepub/cache/images/topic-modeling-and-mallet/fig-10-topic-composition.png" media-type="image/png" />
 		<item id="chapter1" href="chapter001.html" media-type="application/xhtml+xml" />
+		<item id="i_Terminal-on-mac2.png" href="images/var/www/phepub/cache/images/automated-downloading-with-wget/Terminal-on-mac2.png" media-type="image/png" />
+		<item id="i_active-history-chart_edited-1.jpg" href="images/var/www/phepub/cache/images/automated-downloading-with-wget/active-history-chart_edited-1.jpg" media-type="image/jpeg" />
 		<item id="chapter2" href="chapter002.html" media-type="application/xhtml+xml" />
 		<item id="ref_toc" href="TOC.xhtml" media-type="application/xhtml+xml" />
 	</manifest>
@@ -40,6 +30,6 @@
 
 	<guide>
 		<reference type="toc" title="Table of Contents" href="TOC.xhtml" />
-		<reference type="text" title="Getting Started with Topic Modeling and MALLET" href="chapter001.html" />
+		<reference type="text" title="Applied Archival Downloading with Wget" href="chapter001.html" />
 	</guide>
 </package>
