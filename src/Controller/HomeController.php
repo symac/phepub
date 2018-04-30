@@ -42,7 +42,13 @@ class HomeController {
 			$lesson->buildFromDomain($row);
             $book->addLesson($lesson);
 		}
-        $book->generateAsEpub();
+        $epub = $book->generateAsEpub();
+
+        // To finish ...
+        $this->app["dao.book"]->save()
+
+        $zipData = $epub->sendBook("ExampleBook2");
+
 
         return "";
 
