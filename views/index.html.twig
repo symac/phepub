@@ -7,11 +7,20 @@
 		<p>No ebook available</p>
 	{% endif %}
     <h1>Content available</h1>
-    <ul>
+    <table class='table'>
+            <tr>
+                <th>Filename</th>
+                <th>Title</th>
+                <th>Download</th>
+            </tr>
     	{% for lesson in lessons %}
-    		<li>{{ lesson.filename }} - {{lesson.title }}</li>
+    		<tr>
+                <td>{{ lesson.filename }}</td>
+                <td>{{lesson.title }}</td>
+                <td><a href='{{url("generate", {lessonCode: lesson.lessonSlug})}}'>Epub</a></td>
+            </li>
 		{% endfor %}
-    </ul>
+    </table>
     <h1>Internal tools</h1>
     <ul>
     	<li><a href='{{url('generate')}}'>Generate</a></li>

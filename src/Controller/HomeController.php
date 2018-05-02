@@ -25,24 +25,38 @@ class HomeController {
         ));
     }
 
-    public function buildEpubAction( Request $request, Application $app ) {
+    public function buildEpubAction( Request $request, Application $app , String $lessonCode) {
+        $start = time();
         error_reporting(E_ALL | E_STRICT);
         ini_set('error_reporting', E_ALL | E_STRICT);
         ini_set('display_errors', 1);
 
-		$lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
+        if ($lessonCode == "all") {
+            $lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
+        } else {
+            $lessons = [];
+            $lesson = $app["dao.lesson"]->loadByFileName("lessons/".$lessonCode.".md");
+            $lessonId = $lesson->getId();
+            array_push($lessons, $lesson);
+        }
 
         $book = new Book();
         $book->setTitle("Programming Historian");
 		foreach ($lessons as $lesson) {
             $book->addLesson($lesson);
 		}
+
         $epub = $book->generateAsEpub();
 
         // To finish ...
         // $this->app["dao.book"]->save($book);
-        $filename_full = "epub/programminghistorian_".date("Ymd").".epub";
-        print "Save as <a href='".$filename_full."'>$filename_full</a>\n";
+        if ($lessonCode == "all") {
+            $filename_full = "epub/programminghistorian_".date("Ymd").".epub";
+        } else {
+            $filename_full = "epub/programminghistorian_".date("Ymd")."_lesson_".$lessonId.".epub";
+        }
+
+        print "Save as <a href='".$request->getBaseUrl()."/".$filename_full."'>$filename_full</a> [time : ".(time() - $start)."]\n";
         $epub->saveBook($filename_full);
 
 //        $zipData = $epub->sendBook("ExampleBook2");
