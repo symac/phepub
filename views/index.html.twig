@@ -12,12 +12,14 @@
                 <th>Filename</th>
                 <th>Title</th>
                 <th>Download</th>
+                <th>Size</th>
             </tr>
     	{% for lesson in lessons %}
     		<tr>
                 <td>{{ lesson.filename }}</td>
                 <td>{{lesson.title }}</td>
                 <td><a href='{{url("generate", {lessonCode: lesson.lessonSlug})}}'>Epub</a></td>
+                <td>{{lesson.size}}</td>
             </li>
 		{% endfor %}
     </table>

@@ -10,8 +10,43 @@ class Lesson {
 	protected $filename = null;
 	protected $last_checked = null;
 	protected $metadata = null;
+	protected $lessonContent = null;
+
 
 	public function __construct() {
+	}
+
+	protected function dirsize($dir) {
+	    if(is_file($dir)) return array('size'=>filesize($dir),'howmany'=>0);
+	    if($dh=opendir($dir)) {
+	        $size=0;
+	        $n = 0;
+	        while(($file=readdir($dh))!==false) {
+	            if($file=='.' || $file=='..') continue;
+	            $n++;
+	            $data = $this->dirsize($dir.'/'.$file);
+	            $size += $data['size'];
+	            $n += $data['howmany'];
+	        }
+	        closedir($dh);
+	        $fsizebyte = $size;
+			if ($fsizebyte < 1024) {
+		        $fsize = $fsizebyte." bytes";
+		    }elseif (($fsizebyte >= 1024) && ($fsizebyte < 1048576)) {
+		        $fsize = round(($fsizebyte/1024), 2);
+		        $fsize = $fsize." KB";
+		    }elseif (($fsizebyte >= 1048576) && ($fsizebyte < 1073741824)) {
+		        $fsize = round(($fsizebyte/1048576), 2);
+		        $fsize = $fsize." MB";
+		    }elseif ($fsizebyte >= 1073741824) {
+		        $fsize = round(($fsizebyte/1073741824), 2);
+		        $fsize = $fsize." GB";
+		    };
+
+
+	        return array('size'=>$fsize,'howmany'=>$n);
+	    } 
+	    return array('size'=>0,'howmany'=>0);
 	}
 
 	public function setFilename(String $filename) {
@@ -20,6 +55,11 @@ class Lesson {
 
 	public function getFilename() {
 		return $this->filename;
+	}
+
+	public function getSize() {
+		return $this->dirsize($this->getImagePath())["size"];
+		return "120";
 	}
 
 	public function getLessonSlug() {
@@ -57,7 +97,7 @@ class Lesson {
 		return __DIR__."/../../cache/md/".$this->getFilename();
 	}
 
-	public function getMarkdown() {
+	public function getMarkdownContent() {
 		if (is_null($this->getLastChecked())) {
 			$content = $this->downloadFromGithub();
 			$this->setLastChecked(date("Y-m-d H:i:s"));
@@ -67,11 +107,9 @@ class Lesson {
 		return $content;
 	}
 
-	public function getMetadata() {
-		if (!is_null($this->metadata)) {
-			return $this->metadata;
-		}
-		$markDown = $this->getMarkdown();
+	protected function analyseMarkdown() {
+		$markDown = $this->getMarkdownContent();
+
         $quote = function ($str) {
             return preg_quote($str, "~");
         };
@@ -86,20 +124,31 @@ class Lesson {
             $yaml = trim($matches[2]) !== '' ? Yaml::parse(trim($matches[2])) : null;
             $str = ltrim($matches[4]);
 			$this->metadata = $yaml;
+			$this->lessonContent = $str;
 			return $yaml;
-        }
+        }		
+	}
+	public function getLessonContent() {
+		if (is_null($this->lessonContent)) {
+			$this->analyseMarkdown();
+		}
+		return $this->lessonContent;
+	}
 
-        print "Unable to parse metadata for this lesson";
-        exit;
+	public function getLessonMetadata() {
+		if (is_null($this->metadata)) {
+			$this->analyseMarkdown();
+		}
+		return $this->metadata;
 	}
 
 	public function getTitle() {
-		$metadata = $this->getMetadata();
+		$metadata = $this->getLessonMetadata();
 		return $metadata["title"];
 	}
 
 	public function getHtml() {
-		$markDown = $this->getMarkdown();
+		$markDown = $this->getLessonContent();
 
 		// Managing includes
 		preg_match_all("#{% include ([^ ]*) [^}]*}#", $markDown, $includes);
@@ -115,9 +164,12 @@ class Lesson {
 		}
 
 		// Managing top metadata
+		$markDown = trim($markDown);
 		// $mon_html = Markdown::defaultTransform($markDown);
 		$parser = new ParseDown;
 		$mon_html = $parser->text($markDown);
+
+		$mon_html = "<div  class='lesson_title'><h1>".$this->getTitle()."</h1></div>\n".$mon_html;
 		return $mon_html;
 	}
 
@@ -129,7 +181,7 @@ class Lesson {
 	}
 
 	public function downloadAttachments() {
-		$markDown = $this->getMarkdown();
+		$markDown = $this->getMarkdownContent();
 		preg_match_all("#{% include ([^ ]*) [^}]*}#", $markDown, $includes);
 		foreach ($includes[0] as $id => $include) {
 			if ($includes[1][$id] == "toc.html") {
