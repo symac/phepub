@@ -208,8 +208,6 @@ h1 {
   line-height: 1.04347826;
   margin-top: 0em;
   margin-bottom: 2.08695652em;
-  border:1px solid gray;
-  padding:1em;
 }
 h2 {
   font-size: 1.3125em;
@@ -965,3 +963,11 @@ render page on eInk devices)                                    */
   break-inside: avoid;
 }
 /* End CSS */
+
+
+/* Custom Sylvain */
+
+.lesson_title { 
+  border:1px solid gray;
+  padding:1em;  
+}

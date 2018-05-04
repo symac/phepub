@@ -169,7 +169,17 @@ class Lesson {
 		$parser = new ParseDown;
 		$mon_html = $parser->text($markDown);
 
-		$mon_html = "<div  class='lesson_title'><h1>".$this->getTitle()."</h1></div>\n".$mon_html;
+		$html_header = "<div  class='lesson_title'><h1>".$this->getTitle()."</h1>";
+		$author_s = join(", ", $this->getLessonMetadata()["authors"]);
+		$html_header .= "<ul><li class='md_author'>Author(s) : $author_s</li>";
+		$html_header .= "<li class='md_date'>Date : ".$this->getLessonMetadata()["date"]."</li>";
+
+		$url_original = "https://programminghistorian.org/".preg_replace("#\.md$#", "", $this->getFilename());
+		$html_header .= "<li class='md_original_link'>Link : <a href='$url_original'>$url_original</a></li></ul>";
+		$html_header .= "</div>";
+
+		$mon_html = $html_header.$mon_html;
+
 		return $mon_html;
 	}
 
