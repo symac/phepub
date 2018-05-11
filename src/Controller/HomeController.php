@@ -33,6 +33,7 @@ class HomeController {
 
         if ($lessonCode == "all") {
             $lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
+						array_splice($lessons, 5);
         } else {
             $lessons = [];
             $lesson = $app["dao.lesson"]->loadByFileName("lessons/".$lessonCode.".md");
@@ -42,14 +43,14 @@ class HomeController {
 
         $book = new Book();
         $book->setTitle("Programming Historian");
-		foreach ($lessons as $lesson) {
-            $book->addLesson($lesson);
-		}
+				foreach ($lessons as $lesson) {
+					print "Adding ".$lesson->getFilename()."<br/>";
+					$book->addLesson($lesson);
+				}
 
         $epub = $book->generateAsEpub();
 
-        // To finish ...
-        // $this->app["dao.book"]->save($book);
+
         if ($lessonCode == "all") {
             $filename_full = "epub/programminghistorian_".date("Ymd").".epub";
         } else {
@@ -58,6 +59,12 @@ class HomeController {
 
         print "Save as <a href='".$request->getBaseUrl()."/".$filename_full."'>$filename_full</a> [time : ".(time() - $start)."]\n";
         $epub->saveBook($filename_full);
+
+        if ($lessonCode == "all") {
+					// We save the information about the newly created ebook
+					$app["dao.book"]->save($book);
+				}
+
 
 //        $zipData = $epub->sendBook("ExampleBook2");
         return "Generation ok";

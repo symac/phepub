@@ -10,10 +10,14 @@ class BookDAO extends DAO
         $sql = "select * from ".T_BOOK." order by build_date desc limit 0,$number";
         $row = $this->getDb()->fetchAssoc($sql);
 
-        if ($row)
-            return $this->buildDomainObject($row);
-        else
-            return null;
+        if ($row) {
+          $book = $this->buildFromDomain($row);
+          $book->setFilename("programminghistorian_".date("Ymd", strtotime($row["build_date"])).".epub");
+          return $book;
+        }
+        else {
+          return null;
+        }
     }
 
     // public function loadByFileName(String $filename) {
@@ -33,7 +37,8 @@ class BookDAO extends DAO
         $book = new Book();
         $book->setId($row["id"]);
         $book->setBuildDate($row["build_date"]);
-        return $lesson;
+        $book->setNumberOfLessons($row["lessons"]);
+        return $book;
     }
 
     /**
@@ -43,11 +48,12 @@ class BookDAO extends DAO
      */
     public function save(Book $book) {
         $bookData = array(
-            "build_date" => $lesson->getBuildDate(),
+            "build_date" => date("Y-m-d H:i:s"),
+            "lessons" => $book->getNumberOfLessons()
         );
 
         if ($book->getId()) {
-            $this->getDb()->update(T_BOOK, $bookData, array('id' => $bookData->getId()));
+            $this->getDb()->update(T_BOOK, $bookData, array('id' => $book->getId()));
         } else {
             // The article has never been saved : insert it
             $this->getDb()->insert(T_BOOK, $bookData);

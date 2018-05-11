@@ -10,6 +10,7 @@
         "symfony/yaml": "^3.4",
         "twig/twig": "^2.4",
         "symfony/twig-bridge": "^3.4",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "rych/bytesize": "^1.0"
     }
 }

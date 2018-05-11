@@ -9,12 +9,33 @@ use PHPePub\Helpers\CalibreHelper;
 use PHPePub\Helpers\URLHelper;
 use PHPZip\Zip\File\Zip;
 
+use Rych\ByteSize\ByteSize;
+
 use Phepub\Domain\Lesson;
 
 class Book {
 	protected $title = "Programming historian - ePub edition";
 	protected $lessons = array();
 	protected $filename;
+	protected $id;
+	protected $numberOfLessons;
+	protected $buildDate;
+
+	public function setId($id) {
+			$this->id = $id;
+	}
+
+	public function getId() {
+		return $this->id;
+	}
+
+	public function setBuildDate($buildDate) {
+			$this->buildDate = $buildDate;
+	}
+
+	public function getBuildDate() {
+		return $this->buildDate;
+	}
 
 	public function setTitle($title) {
 		$this->title = $title;
@@ -23,13 +44,29 @@ class Book {
 	public function getFilename() {
 		return $this->filename;
 	}
-	
+
+	public function getSize() {
+		$bytesize = new \Rych\ByteSize\ByteSize;
+		return  $bytesize->format(filesize(ROOT."/web/epub/".$this->getFilename()));;
+	}
+
 	public function setFilename($filename) {
 		$this->filename = $filename;
 	}
 
 	public function addLesson(Lesson $lesson) {
 		array_push($this->lessons, $lesson);
+	}
+
+	public function getNumberOfLessons() {
+		if (isset($this->numberOfLessons)) {
+			return $this->numberOfLessons;
+		}
+		return sizeof($this->lessons);
+	}
+
+	public function setNumberOfLessons($number) {
+		$this->numberOfLessons = $number;
 	}
 
 	public function generateAsEpub() {

@@ -1,8 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-	<h1>Book for download</h1>
 	{% if lastBook %}
+		<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<a href="epub/{{lastBook.filename}}" class="btn btn-primary btn-block" role="button" aria-disabled="true">
+						<span style='font-size:2em'>Download Epub ({{lastBook.size}})</span>
+						<br/>
+						<span>{{lastBook.numberOfLessons}} lessons &mdash; built on {{lastBook.buildDate | date("Y-m-d")}}</span></a>
+				</div>
+		</div>
 	{% else %}
 		<p>No ebook available</p>
 	{% endif %}

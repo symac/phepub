@@ -13,6 +13,4 @@ require __DIR__.'/../app/constants.php';
 require __DIR__.'/../app/routes.php';
 require __DIR__.'/../app/app.php';
 
-define("ROOT", __DIR__ . "/../");
-
 $app->run();
