@@ -6,8 +6,16 @@ use Phepub\Domain\Lesson;
 
 class LessonDAO extends DAO
 {
-    public function findAll() {
+    public function findAllLessonsNeedingUpdate() {
+        return $this->findAll(true);
+    }
+
+    public function findAll($onlyNullUpdate = false) {
         $sql = "select * from ".T_LESSON." where filename not like 'lessons/retired%'";
+        if ($onlyNullUpdate) {
+            // $sql .= " AND last_checked is null";
+            $sql .= " ORDER BY last_checked asc LIMIT 0,1";
+        }
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -50,13 +58,15 @@ class LessonDAO extends DAO
             "last_checked" => $lesson->getLastChecked()
         );
 
-        if ($instance->getId()) {
-            $this->getDb()->update('bibdix_instance', $lessonData, array('id' => $lessonData->getId()));
+        print "Save as ".$lesson->getLastChecked()."<br/>";
+
+        if ($lesson->getId()) {
+            $this->getDb()->update(T_LESSON, $lessonData, array('id' => $lesson->getId()));
         } else {
             // The article has never been saved : insert it
-            $this->getDb()->insert('bibdix_instance', $lessonData);
+            $this->getDb()->insert(T_LESSON, $lessonData);
             $id = $this->getDb()->lastInsertId();
-            $instance->setId($id);
+            $lesson->setId($id);
         }
     }
 
@@ -67,7 +77,8 @@ class LessonDAO extends DAO
      */
     public function delete($id) {
         // Delete the instance
+        print "TODO";
+        return "";
         $this->getDb()->delete('bibdix_instance', array('id' => $id));
     }
-
 }

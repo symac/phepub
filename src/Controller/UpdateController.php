@@ -15,11 +15,10 @@ use SimplePie;
 
 
 class UpdateController {
-
 	// Displaying homepage
 	public function checkNewLessonsAction( Request $request, Application $app ) {
 
-		// 
+		//
 		$feed = new SimplePie();
 		$feed->set_feed_url("https://github.com/programminghistorian/jekyll/commits/gh-pages.atom");
 
@@ -33,7 +32,7 @@ class UpdateController {
 		foreach ($items as $item)
 		{
 			$commit_id = $item->get_id();
-			
+
 			$sql = "select * from phepub_commits where id=?";
 			$stmt = $app["db"]->prepare($sql);
 			$stmt->execute(array($commit_id));
@@ -52,7 +51,7 @@ class UpdateController {
 		foreach ($commits as $commit) {
 			$commit_id = $commit["id"];
 			$basic_commit_id = preg_replace("#^.*Commit/(.*)#", "$1", $commit_id);
-			print $commit_id." => ".$basic_commit_id."<br/>";
+			print "<h2>".$commit_id." => ".$basic_commit_id."</h2>";
 
 			// On va télécharger la page
 			$dom = new \DOMDocument;
@@ -67,21 +66,21 @@ class UpdateController {
 			$nodes = $xpath->query('//div[@id="toc"]/ol/li/a');
 			foreach($nodes as $href) {
 				$filename = $href->nodeValue;
-				$lesson = new Lesson($app);
 				if (preg_match("#^lessons/#", $filename)) {
 					# On regarde le cas où la leçon est renommée
 					if (preg_match("# → #", $filename)) {
 						print "Leçon renommée, à traiter a posteriori";
 					} else {
-						$lesson_exist = $lesson->loadByFileName($filename);
+						$lesson_exist = $app["dao.lesson"]->loadByFileName($filename);
 						if ($lesson_exist) {
 							// On la passe à null pour qu'elle soit de nouveau téléchargée
-							$app["db"]->update("phepub_lessons", array("last_checked" => null), array("id" => $lesson->getId()));
+							$app["db"]->update("phepub_lessons", array("last_checked" => null), array("id" => $lesson_exist->getId()));
 						} else {
 							print "SAVE";
+							$lesson = new Lesson($app);
 							$lesson->setFilename($filename);
-							$lesson->save();
-						}						
+							$app["dao.lesson"]->save($lesson);
+						}
 					}
 				}
 
@@ -95,15 +94,15 @@ class UpdateController {
 		}
 
 		print "<h1>Analyse des leçons</h1>";
-		$lessons = $app["db"]->fetchAll("select * from phepub_lessons"); # where last_checked is null");
+		$lessons = $app["dao.lesson"]->findAllLessonsNeedingUpdate();
 
-		foreach ($lessons as $row) {
+		foreach ($lessons as $lesson) {
 			// On va télécharger le MD
-			print $row["filename"]."<br/>";
-			$lesson = new Lesson($app);
-			$lesson->buildFromDomain($row);
+			print $lesson->getFilename()."<br/>";
+			$lesson->setLastChecked(null);
+			$lesson->downloadFromGithub();
 			$lesson->downloadAttachments();
-			$lesson->save();
+			$app["dao.lesson"]->save($lesson);
 		}
 		return "";
 	}
