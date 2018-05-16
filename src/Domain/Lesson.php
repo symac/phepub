@@ -11,7 +11,7 @@ class Lesson {
 	protected $last_checked = null;
 	protected $metadata = null;
 	protected $lessonContent = null;
-
+	protected $published = true; // default to true, false only when published: false in the properties of the Markdown file
 
 	public function __construct() {
 	}
@@ -45,7 +45,7 @@ class Lesson {
 
 
 	        return array('size'=>$fsize,'howmany'=>$n);
-	    } 
+	    }
 	    return array('size'=>0,'howmany'=>0);
 	}
 
@@ -126,7 +126,7 @@ class Lesson {
 			$this->metadata = $yaml;
 			$this->lessonContent = $str;
 			return $yaml;
-        }		
+        }
 	}
 	public function getLessonContent() {
 		if (is_null($this->lessonContent)) {
@@ -145,6 +145,14 @@ class Lesson {
 	public function getTitle() {
 		$metadata = $this->getLessonMetadata();
 		return $metadata["title"];
+	}
+
+	public function setPublished($published) {
+		$this->published = $published;
+	}
+
+	public function getPublished() {
+		return $this->published;
 	}
 
 	public function getHtml() {
@@ -170,8 +178,12 @@ class Lesson {
 		$mon_html = $parser->text($markDown);
 
 		$html_header = "<div  class='lesson_title'><h1>".$this->getTitle()."</h1>";
-		$author_s = join(", ", $this->getLessonMetadata()["authors"]);
-		$html_header .= "<ul><li class='md_author'>Author(s) : $author_s</li>";
+		if (!isset($this->getLessonMetadata()["authors"])) {
+			print "Author not set in ".$this->getFilename()."<br/>";
+		} else {
+			$author_s = join(", ", $this->getLessonMetadata()["authors"]);
+			$html_header .= "<ul><li class='md_author'>Author(s) : $author_s</li>";
+		}
 		$html_header .= "<li class='md_date'>Date : ".$this->getLessonMetadata()["date"]."</li>";
 
 		$url_original = "https://programminghistorian.org/".preg_replace("#\.md$#", "", $this->getFilename());

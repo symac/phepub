@@ -13,8 +13,7 @@ class LessonDAO extends DAO
     public function findAll($onlyNullUpdate = false) {
         $sql = "select * from ".T_LESSON." where filename not like 'lessons/retired%'";
         if ($onlyNullUpdate) {
-            // $sql .= " AND last_checked is null";
-            $sql .= " ORDER BY last_checked asc LIMIT 0,1";
+            $sql .= " AND last_checked is null";
         }
         $result = $this->getDb()->fetchAll($sql);
 

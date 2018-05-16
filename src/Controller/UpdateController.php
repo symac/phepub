@@ -102,6 +102,12 @@ class UpdateController {
 			$lesson->setLastChecked(null);
 			$lesson->downloadFromGithub();
 			$lesson->downloadAttachments();
+
+			// We need to check if the lesson has been published
+			if ( (isset($lesson->getLessonMetadata()["published"])) and (!$lesson->getLessonMetadata()["published"]) ) {
+				$lesson->setPublished(false);
+			}
+
 			$app["dao.lesson"]->save($lesson);
 		}
 		return "";
