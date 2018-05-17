@@ -5,6 +5,8 @@ use Phepub\Domain\Image;
 use Symfony\Component\Yaml\Yaml;
 use Parsedown;
 
+use Rych\ByteSize\ByteSize;
+
 class Lesson {
 	protected $id = null;
 	protected $filename = null;
@@ -16,39 +18,6 @@ class Lesson {
 	public function __construct() {
 	}
 
-	protected function dirsize($dir) {
-	    if(is_file($dir)) return array('size'=>filesize($dir),'howmany'=>0);
-	    if($dh=opendir($dir)) {
-	        $size=0;
-	        $n = 0;
-	        while(($file=readdir($dh))!==false) {
-	            if($file=='.' || $file=='..') continue;
-	            $n++;
-	            $data = $this->dirsize($dir.'/'.$file);
-	            $size += $data['size'];
-	            $n += $data['howmany'];
-	        }
-	        closedir($dh);
-	        $fsizebyte = $size;
-			if ($fsizebyte < 1024) {
-		        $fsize = $fsizebyte." bytes";
-		    }elseif (($fsizebyte >= 1024) && ($fsizebyte < 1048576)) {
-		        $fsize = round(($fsizebyte/1024), 2);
-		        $fsize = $fsize." KB";
-		    }elseif (($fsizebyte >= 1048576) && ($fsizebyte < 1073741824)) {
-		        $fsize = round(($fsizebyte/1048576), 2);
-		        $fsize = $fsize." MB";
-		    }elseif ($fsizebyte >= 1073741824) {
-		        $fsize = round(($fsizebyte/1073741824), 2);
-		        $fsize = $fsize." GB";
-		    };
-
-
-	        return array('size'=>$fsize,'howmany'=>$n);
-	    }
-	    return array('size'=>0,'howmany'=>0);
-	}
-
 	public function setFilename(String $filename) {
 		$this->filename = $filename;
 	}
@@ -57,9 +26,13 @@ class Lesson {
 		return $this->filename;
 	}
 
+	public function getEpubFilename() {
+			return "ph_".basename($this->getFilename(), ".md").".epub";
+	}
+
 	public function getSize() {
-		return $this->dirsize($this->getImagePath())["size"];
-		return "120";
+		$bytesize = new \Rych\ByteSize\ByteSize;
+		return $bytesize->format(filesize(__DIR__."/../../web/epub/".$this->getEpubFilename()));
 	}
 
 	public function getLessonSlug() {

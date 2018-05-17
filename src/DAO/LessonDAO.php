@@ -6,15 +6,22 @@ use Phepub\Domain\Lesson;
 
 class LessonDAO extends DAO
 {
+    public function findAllLessonsNeedingEpub() {
+      return $this->findAll(false, true);
+    }
+
     public function findAllLessonsNeedingUpdate() {
         return $this->findAll(true);
     }
 
-    public function findAll($onlyNullUpdate = false) {
-        $sql = "select * from ".T_LESSON." where filename not like 'lessons/retired%'";
+    public function findAll($onlyNullUpdate = false, $onlyEpubUpdate = false) {
+        $sql = "select * from ".T_LESSON." where published = 1";
         if ($onlyNullUpdate) {
-            $sql .= " AND last_checked is null";
+          $sql .= " AND last_checked is null";
+        } elseif ($onlyEpubUpdate) {
+          $sql .= " AND epub_need_rebuild = 1 order by last_checked asc";
         }
+
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -43,6 +50,7 @@ class LessonDAO extends DAO
         $lesson->setId($row["id"]);
         $lesson->setFilename($row["filename"]);
         $lesson->setLastChecked($row["last_checked"]);
+        $lesson->setPublished($row["published"]);
         return $lesson;
     }
 
@@ -54,7 +62,8 @@ class LessonDAO extends DAO
     public function save(Lesson $lesson) {
         $lessonData = array(
             "filename" => $lesson->getFilename(),
-            "last_checked" => $lesson->getLastChecked()
+            "last_checked" => $lesson->getLastChecked(),
+            "published" => $lesson->getPublished()
         );
 
         print "Save as ".$lesson->getLastChecked()."<br/>";

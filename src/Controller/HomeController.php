@@ -25,7 +25,27 @@ class HomeController {
         ));
     }
 
-    public function buildEpubAction( Request $request, Application $app , String $lessonCode) {
+		public function downloadAction( Request $request, Application $app, String $lessonCode) {
+			$lesson = $app["dao.lesson"]->loadByFileName("lessons/".$lessonCode.".md");
+			if (!$lesson) {
+				return "Download error, sorry";
+			}
+
+			$app["db"]->insert("phepub_download",
+				array(
+					"id_lesson" => $lesson->getId(),
+					"ip" => $request->getClientIp(),
+					"user_agent" => $request->headers->get('User-Agent')
+				)
+			);
+
+			$path = ROOT."/web/epub/".$lesson->getEpubFilename();
+			return $app
+				->sendFile($path)
+				->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, basename($path));
+		}
+
+    public function OLDDDDbuildEpubAction( Request $request, Application $app , String $lessonCode) {
         $start = time();
         error_reporting(E_ALL | E_STRICT);
         ini_set('error_reporting', E_ALL | E_STRICT);
@@ -33,7 +53,6 @@ class HomeController {
 
         if ($lessonCode == "all") {
             $lessons = $app["dao.lesson"]->findAll(); # where last_checked is null");
-						array_splice($lessons, 5);
         } else {
             $lessons = [];
             $lesson = $app["dao.lesson"]->loadByFileName("lessons/".$lessonCode.".md");
@@ -43,9 +62,11 @@ class HomeController {
 
         $book = new Book();
         $book->setTitle("Programming Historian");
+				$i = 1;
 				foreach ($lessons as $lesson) {
-					print "Adding ".$lesson->getFilename()."<br/>";
+					print "$i - Adding ".$lesson->getFilename()."<br/>";
 					$book->addLesson($lesson);
+					$i++;
 				}
 
         $epub = $book->generateAsEpub();

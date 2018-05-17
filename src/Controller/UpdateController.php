@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use Phepub\Domain\Book;
 use Phepub\Domain\Lesson;
 use Phepub\Domain\Image;
 
@@ -15,10 +16,30 @@ use SimplePie;
 
 
 class UpdateController {
-	// Displaying homepage
+
+	public function lessonsNeedEpubAction( Request $request, Application $app) {
+		$lessons = $app["dao.lesson"]->findAllLessonsNeedingEpub();
+		// We only build 5 epubs at a time
+		$lessons = array_slice($lessons, 0, 5);
+		foreach ($lessons as $lesson) {
+			$start = time();
+			$book = new Book();
+			$book->setTitle("PH - ".$lesson->getTitle());
+			$book->addLesson($lesson);
+			$epub = $book->generateAsEpub();
+			$filename_full = "epub/ph_".basename($lesson->getFilename(), ".md").".epub";
+			$epub->saveBook($filename_full);
+
+			print $lesson->getTitle()." => <a href='".$request->getBaseUrl()."/".$filename_full."'>$filename_full</a> [time : ".(time() - $start)."]<br/>\n";
+
+			$app["db"]->update("phepub_lessons", array("epub_need_rebuild" => 0), array("id" => $lesson->getId()));
+		}
+		return "";
+
+	}
+
 	public function checkNewLessonsAction( Request $request, Application $app ) {
 
-		//
 		$feed = new SimplePie();
 		$feed->set_feed_url("https://github.com/programminghistorian/jekyll/commits/gh-pages.atom");
 
@@ -108,6 +129,9 @@ class UpdateController {
 				$lesson->setPublished(false);
 			}
 
+			$app["db"]->update("phepub_lessons", array("epub_need_rebuild" => 1), array("id" => $lesson->getId()));
+
+			// We are going to rebuild the epub of $this
 			$app["dao.lesson"]->save($lesson);
 		}
 		return "";
