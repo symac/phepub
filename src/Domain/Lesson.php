@@ -157,7 +157,8 @@ class Lesson {
 			$author_s = join(", ", $this->getLessonMetadata()["authors"]);
 			$html_header .= "<ul><li class='md_author'>Author(s) : $author_s</li>";
 		}
-		$html_header .= "<li class='md_date'>Date : ".$this->getLessonMetadata()["date"]."</li>";
+
+		$html_header .= "<li class='md_date'>Date : ".date("Y-m-d", $this->getLessonMetadata()["date"])."</li>";
 
 		$url_original = "https://programminghistorian.org/".preg_replace("#\.md$#", "", $this->getFilename());
 		$html_header .= "<li class='md_original_link'>Link : <a href='$url_original'>$url_original</a></li></ul>";
