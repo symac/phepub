@@ -17,10 +17,19 @@ use SimplePie;
 
 class UpdateController {
 
-	public function lessonsNeedEpubAction( Request $request, Application $app) {
-		$lessons = $app["dao.lesson"]->findAllLessonsNeedingEpub();
-		// We only build 5 epubs at a time
-		$lessons = array_slice($lessons, 0, 5);
+	public function lessonsNeedEpubAction( Request $request, Application $app, String $code = null) {
+		if ($code) {
+			$lesson = $app["dao.lesson"]->loadByFileName("lessons/".$code.".md");
+			$lessons = [$lesson];
+		} else {
+			$lessons = $app["dao.lesson"]->findAllLessonsNeedingEpub();
+			// We only build 5 epubs at a time
+			$lessons = array_slice($lessons, 0, 5);
+		}
+		if (sizeof($lessons) == 0) {
+			return "No lesson to rebuild";
+		}
+		print "<ul>";
 		foreach ($lessons as $lesson) {
 			$start = time();
 			$book = new Book();
@@ -30,12 +39,13 @@ class UpdateController {
 			$filename_full = "epub/ph_".basename($lesson->getFilename(), ".md").".epub";
 			$epub->saveBook($filename_full);
 
+			print "<li>";
 			print $lesson->getTitle()." => <a href='".$request->getBaseUrl()."/".$filename_full."'>$filename_full</a> [time : ".(time() - $start)."]<br/>\n";
-
+			print "</li>";
 			$app["db"]->update("phepub_lessons", array("epub_need_rebuild" => 0), array("id" => $lesson->getId()));
 		}
+		print "</ul>";
 		return "";
-
 	}
 
 	public function checkNewLessonsAction( Request $request, Application $app ) {
