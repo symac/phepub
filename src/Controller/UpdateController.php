@@ -33,6 +33,7 @@ class UpdateController {
 			// On va sauvegarder les infos sur l'ouvrage
 			$book = new Book();
 			$book->setNumberOfLessons($numberOfLessons);
+			$book->setFilename("merge.epub");
 			$app["dao.book"]->save($book);
 			return "New book built with $numberOfLessons lessons";
 		}

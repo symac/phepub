@@ -49,7 +49,8 @@ class BookDAO extends DAO
     public function save(Book $book) {
         $bookData = array(
             "build_date" => date("Y-m-d H:i:s"),
-            "lessons" => $book->getNumberOfLessons()
+            "lessons" => $book->getNumberOfLessons(),
+            "filename" => $book->getFilename()
         );
 
         if ($book->getId()) {
