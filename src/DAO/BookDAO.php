@@ -12,7 +12,6 @@ class BookDAO extends DAO
 
         if ($row) {
           $book = $this->buildFromDomain($row);
-          $book->setFilename("programminghistorian_".date("Ymd", strtotime($row["build_date"])).".epub");
           return $book;
         }
         else {
@@ -38,6 +37,7 @@ class BookDAO extends DAO
         $book->setId($row["id"]);
         $book->setBuildDate($row["build_date"]);
         $book->setNumberOfLessons($row["lessons"]);
+        $book->setFilename($row["filename"]);
         return $book;
     }
 

@@ -47,7 +47,7 @@ class Book {
 
 	public function getSize() {
 		$bytesize = new \Rych\ByteSize\ByteSize;
-		return  $bytesize->format(filesize(ROOT."/web/epub/".$this->getFilename()));;
+		return  $bytesize->format(filesize(ROOT."/web/".$this->getFilename()));;
 	}
 
 	public function setFilename($filename) {
