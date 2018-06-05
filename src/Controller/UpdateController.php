@@ -17,6 +17,27 @@ use SimplePie;
 
 class UpdateController {
 
+	public function mergeEpubFiles( Request $request, Application $app ) {
+		$command = escapeshellcmd("python ".__DIR__."/../../bin/epubmerge.py");
+		exec($command." /var/www/phepub/web/epub/*.epub", $output, $ret);
+		$numberOfLessons = null;
+		foreach ($output as $line) {
+			if (preg_match("/#FILESIZE#(\d*)$/", $line, $match)) {
+				$numberOfLessons = $match[1];
+			}
+		}
+
+		if (is_null($numberOfLessons)) {
+			return "NULL, errorr ! ";
+		} else {
+			// On va sauvegarder les infos sur l'ouvrage
+			$book = new Book();
+			$book->setNumberOfLessons($numberOfLessons);
+			$app["dao.book"]->save($book);
+			return "New book built with $numberOfLessons lessons";
+		}
+	}
+
 	public function lessonsNeedEpubAction( Request $request, Application $app, String $lessonCode = null) {
 		if (is_null($lessonCode)) {
 			$lessons = $app["dao.lesson"]->findAllLessonsNeedingEpub();

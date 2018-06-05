@@ -101,7 +101,7 @@ class Book {
 			$epub->addChapter($lesson->getTitle(), $chapterFilename, $chapterContent, true, EPub::EXTERNAL_REF_ADD);
 			$chapterCount++;
 		}
-		$epub->buildTOC();
+		// $epub->buildTOC();
 
 		date_default_timezone_set('Europe/Paris');
 		$epub->finalize(); // Finalize the book, and build the archive.
