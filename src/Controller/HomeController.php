@@ -25,8 +25,8 @@ class HomeController {
         ));
     }
 
-		public function downloadAction( Request $request, Application $app, String $lessonCode) {
-			$lesson = $app["dao.lesson"]->loadByFileName("lessons/".$lessonCode.".md");
+		public function downloadAction( Request $request, Application $app, String $lessonLang, String $lessonCode) {
+			$lesson = $app["dao.lesson"]->loadByFileName($lessonLang."/lessons/".$lessonCode.".md");
 			if (!$lesson) {
 				return "Download error, sorry";
 			}

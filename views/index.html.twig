@@ -23,15 +23,11 @@
             </tr>
     	{% for lesson in lessons %}
     		<tr>
-                <td>{{ lesson.filename }}</td>
-                <td>{{lesson.title }}</td>
-                <td><a rel="nofollow" href='{{url("download", {lessonCode: lesson.lessonSlug})}}'>Epub</a></td>
+                <td>{{ lesson.filenameBase}}</td>
+                <td>{{ lesson.title }}</td>
+                <td><a rel="nofollow" href='{{url("download", {lessonCode: lesson.lessonSlug, lessonLang: lesson.lang})}}'>Epub</a></td>
                 <td>{{lesson.size}}</td>
             </li>
 		{% endfor %}
     </table>
-    <h1>Internal tools</h1>
-    <ul>
-			<li><a href='{{url('update-cache-lessons')}}'>Check github for new / updated lessons</a></li>
-    </ul>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+	<h1>Admin links</h1>
+	<ol>
+		<li><a href='{{url('update-cache-lessons')}}'>Check github for new / updated lessons</a></li>
+		<li><a href='{{url('update-epub-lessons')}}'>Update epub needing</a></li>
+		<li><a href='{{url('admin-merge')}}'>Merge all lessons into 1 epub</a></li>
+	</ol>
+	<li><a href='{{url('admin-download-attachments')}}'>GEt all attachments</a></li>
+
+	<hr/>
+{% endblock %}

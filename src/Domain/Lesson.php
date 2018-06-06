@@ -14,6 +14,7 @@ class Lesson {
 	protected $metadata = null;
 	protected $lessonContent = null;
 	protected $published = true; // default to true, false only when published: false in the properties of the Markdown file
+	protected $lang = null;
 
 	public function __construct() {
 	}
@@ -26,6 +27,18 @@ class Lesson {
 		return $this->filename;
 	}
 
+	public function getFilenameBase() {
+		return basename($this->getFilename());
+	}
+
+	public function setLang(String $lang) {
+		$this->lang = $lang;
+	}
+
+	public function getLang() {
+		return $this->lang;
+	}
+
 	public function getEpubFilename() {
 			return "ph_".basename($this->getFilename(), ".md").".epub";
 	}
@@ -36,12 +49,13 @@ class Lesson {
 	}
 
 	public function getLessonSlug() {
-		return preg_replace("#^lessons/(.*).md$#", "$1", $this->filename);
+		return preg_replace("#^.{2}/lessons/(.*).md$#", "$1", $this->filename);
 	}
 
 	public function getImagePath() {
-		$imagePath = __DIR__."/../../cache/images/".$this->getLessonSlug();
+		$imagePath = __DIR__."/../../cache/images/".$this->getLang()."/".$this->getLessonSlug();
 		if (!is_dir($imagePath)) {
+			print "Building $imagePath";
 			mkdir($imagePath);
 		}
 		return $imagePath;

@@ -49,6 +49,7 @@ class LessonDAO extends DAO
         $lesson = new Lesson();
         $lesson->setId($row["id"]);
         $lesson->setFilename($row["filename"]);
+        $lesson->setLang($row["lang"]);
         $lesson->setLastChecked($row["last_checked"]);
         $lesson->setPublished($row["published"]);
         return $lesson;
@@ -62,6 +63,7 @@ class LessonDAO extends DAO
     public function save(Lesson $lesson) {
         $lessonData = array(
             "filename" => $lesson->getFilename(),
+            "lang" => $lesson->getLang(),
             "last_checked" => $lesson->getLastChecked(),
             "published" => $lesson->getPublished()
         );

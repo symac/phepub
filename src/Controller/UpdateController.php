@@ -17,6 +17,19 @@ use SimplePie;
 
 class UpdateController {
 
+	public function adminDownloadAttachmentsAction( Request $request, Application $app ) {
+		$lessons = $app["dao.lesson"]->findAll();
+		foreach ($lessons as $lesson) {
+			print "Download for ".$lesson->getTitle()."<br/>";
+			$lesson->downloadAttachments();
+		}
+		return "";
+	}
+
+
+	public function adminAction( Request $request, Application $app ) {
+		return $app['twig']->render('admin.html.twig');
+	}
 	public function mergeEpubFiles( Request $request, Application $app ) {
 		$command = escapeshellcmd("python ".__DIR__."/../../bin/epubmerge.py");
 		exec($command." /var/www/phepub/web/epub/*.epub", $output, $ret);
@@ -44,7 +57,7 @@ class UpdateController {
 			$lessons = $app["dao.lesson"]->findAllLessonsNeedingEpub();
 			// We only build 5 epubs at a time
 			$lessons = array_slice($lessons, 0, 5);
-			if (sizeof($lesson) == 0) {
+			if (sizeof($lessons) == 0) {
 				print "Nothing to build";
 			}
 		} else {
@@ -123,7 +136,7 @@ class UpdateController {
 			$nodes = $xpath->query('//div[@id="toc"]/ol/li/a');
 			foreach($nodes as $href) {
 				$filename = $href->nodeValue;
-				if (preg_match("#^lessons/#", $filename)) {
+				if (preg_match("#^(.{2})/lessons/#", $filename, $match)) {
 					# On regarde le cas où la leçon est renommée
 					if (preg_match("# → #", $filename)) {
 						print "Leçon renommée, à traiter a posteriori";
@@ -136,6 +149,7 @@ class UpdateController {
 							print "SAVE";
 							$lesson = new Lesson($app);
 							$lesson->setFilename($filename);
+							$lesson->setLang($match[1]);
 							$app["dao.lesson"]->save($lesson);
 						}
 					}
