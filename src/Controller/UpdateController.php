@@ -22,6 +22,7 @@ class UpdateController {
 		foreach ($lessons as $lesson) {
 			print "Download for ".$lesson->getTitle()."<br/>";
 			$lesson->downloadAttachments();
+			$app["dao.lesson"]->save($lesson);
 		}
 		return "";
 	}

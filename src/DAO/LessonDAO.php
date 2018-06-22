@@ -18,8 +18,12 @@ class LessonDAO extends DAO
         $sql = "select * from ".T_LESSON." where published = 1";
         if ($onlyNullUpdate) {
           $sql .= " AND last_checked is null";
-        } elseif ($onlyEpubUpdate) {
+        }
+
+        if ($onlyEpubUpdate) {
           $sql .= " AND epub_need_rebuild = 1 order by last_checked asc";
+        } else {
+          $sql .= " order by title";
         }
 
         $result = $this->getDb()->fetchAll($sql);
@@ -52,6 +56,7 @@ class LessonDAO extends DAO
         $lesson->setLang($row["lang"]);
         $lesson->setLastChecked($row["last_checked"]);
         $lesson->setPublished($row["published"]);
+        $lesson->setTitle($row["title"]);
         return $lesson;
     }
 
@@ -61,11 +66,16 @@ class LessonDAO extends DAO
      * @param \Bibdix\Domain\Instance $instance The instance to save
      */
     public function save(Lesson $lesson) {
+        // We need to get the title from Mardown
+        $metadata = $lesson->getLessonMetadata();
+        $lessonTitle = $metadata["title"];
+
         $lessonData = array(
             "filename" => $lesson->getFilename(),
             "lang" => $lesson->getLang(),
             "last_checked" => $lesson->getLastChecked(),
-            "published" => $lesson->getPublished()
+            "published" => $lesson->getPublished(),
+            "title" => $lessonTitle
         );
 
         print "Save as ".$lesson->getLastChecked()."<br/>";

@@ -15,6 +15,7 @@ class Lesson {
 	protected $lessonContent = null;
 	protected $published = true; // default to true, false only when published: false in the properties of the Markdown file
 	protected $lang = null;
+	protected $title = null;
 
 	public function __construct() {
 	}
@@ -130,8 +131,11 @@ class Lesson {
 	}
 
 	public function getTitle() {
-		$metadata = $this->getLessonMetadata();
-		return $metadata["title"];
+		return $this->title;
+	}
+
+	public function setTitle(String $title) {
+		$this->title = $title;
 	}
 
 	public function setPublished($published) {
