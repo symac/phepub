@@ -33,7 +33,8 @@ class UpdateController {
 	}
 	public function mergeEpubFiles( Request $request, Application $app ) {
 		$command = escapeshellcmd("python ".__DIR__."/../../bin/epubmerge.py");
-		exec($command." /var/www/phepub/web/epub/*.epub", $output, $ret);
+		exec($command." ".ROOT."/web/epub/*.epub", $output, $ret);
+
 		$numberOfLessons = null;
 		foreach ($output as $line) {
 			if (preg_match("/#FILESIZE#(\d*)$/", $line, $match)) {
